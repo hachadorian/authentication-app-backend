@@ -1,0 +1,29 @@
+import { gql } from "apollo-server-core";
+
+export const userTypeDefs = gql`
+  type Query {
+    hello: String!
+    me: String!
+  }
+
+  type Mutation {
+    register(email: String!, password: String!): UserResult
+    login(email: String!, password: String!): UserResult
+  }
+
+  type User {
+    id: String
+    email: String!
+    password: String!
+    name: String
+    bio: String
+    phone: String
+    image: String
+  }
+
+  type Errors {
+    message: String!
+  }
+
+  union UserResult = User | Errors
+`;
