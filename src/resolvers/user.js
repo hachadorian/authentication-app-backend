@@ -6,8 +6,12 @@ import { v4 as uuid } from "uuid";
 export const userResolver = {
   Query: {
     hello: () => "hello",
-    me: (root, args, context) => {
-      return context.req.session;
+    me: async (root, args, context) => {
+      const user = await dbAccess.findOne("user", {
+        field: "id",
+        value: context.req.session.qid,
+      });
+      return user;
     },
   },
   Mutation: {
@@ -30,6 +34,7 @@ export const userResolver = {
 
       const insert = await dbAccess.insertOne("user", createdUser);
       if (insert) {
+        context.req.session.qid = createdUser.id;
         return {
           __typename: "User",
           ...createdUser,
