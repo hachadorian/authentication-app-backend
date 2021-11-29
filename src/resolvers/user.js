@@ -71,5 +71,19 @@ export const userResolver = {
         ...user,
       };
     },
+    update: async (root, args, context) => {
+      const user = await dbAccess.findOne("user", {
+        field: "id",
+        value: context.req.session.qid,
+      });
+
+      Object.keys(args.input).map((key) => {
+        user[key] = args.input[key];
+      });
+
+      await dbAccess.updateOne("user", { field: "id", value: user.id }, user);
+
+      return user;
+    },
   },
 };
