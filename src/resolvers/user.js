@@ -15,7 +15,7 @@ export const userResolver = {
     },
   },
   Mutation: {
-    register: async (root, args) => {
+    register: async (root, args, context) => {
       const errors = validate({
         email: args.email,
         password: args.password,
@@ -77,12 +77,18 @@ export const userResolver = {
         value: context.req.session.qid,
       });
 
-      Object.keys(args.input).map((key) => {
-        user[key] = args.input[key];
+      Object.keys(user).map(async (key) => {
+        if (args[key]) {
+          if (key !== "password") {
+            user[key] = args[key];
+          } else {
+            const hashedPassword = await bcrypt.hash(args[key], 10);
+            user[key] = hashedPassword;
+          }
+        }
       });
 
       await dbAccess.updateOne("user", { field: "id", value: user.id }, user);
-
       return user;
     },
   },

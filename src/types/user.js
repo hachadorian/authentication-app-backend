@@ -9,23 +9,20 @@ export const userTypeDefs = gql`
   type Mutation {
     register(email: String!, password: String!): UserResult
     login(email: String!, password: String!): UserResult
-    update(input: UserInput): User
+    update(
+      email: String
+      password: String
+      name: String
+      bio: String
+      phone: String
+      image: String
+    ): User
   }
 
   type User {
     id: String
     email: String!
     password: String!
-    name: String
-    bio: String
-    phone: String
-    image: String
-  }
-
-  input UserInput {
-    id: String
-    email: String
-    password: String
     name: String
     bio: String
     phone: String
