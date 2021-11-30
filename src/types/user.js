@@ -1,6 +1,8 @@
 import { gql } from "apollo-server-core";
 
 export const userTypeDefs = gql`
+  scalar Upload
+
   type Query {
     hello: String!
     me: User!
@@ -15,8 +17,9 @@ export const userTypeDefs = gql`
       name: String
       bio: String
       phone: String
-      image: String
+      image: Upload
     ): User
+    uploadFile(file: Upload!): File
   }
 
   type User {
@@ -27,6 +30,12 @@ export const userTypeDefs = gql`
     bio: String
     phone: String
     image: String
+  }
+
+  type File {
+    filename: String!
+    mimetype: String!
+    encoding: String!
   }
 
   type Errors {

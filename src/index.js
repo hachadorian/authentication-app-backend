@@ -11,6 +11,7 @@ import session from "express-session";
 import redis from "redis";
 import connectRedis from "connect-redis";
 import cors from "cors";
+import { graphqlUploadExpress } from "graphql-upload";
 
 const main = async () => {
   dotenv.config();
@@ -57,7 +58,10 @@ const main = async () => {
       ApolloServerPluginLandingPageGraphQLPlayground(),
     ],
     context: ({ req, res }) => ({ req, res }),
+    uploads: false,
   });
+
+  app.use(graphqlUploadExpress({ maxFileSize: 10000, maxFiles: 10 }));
 
   await apolloServer.start();
   apolloServer.applyMiddleware({
