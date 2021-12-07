@@ -78,6 +78,16 @@ export const userResolver = {
         value: context.req.session.qid,
       });
 
+      const errors = validate({
+        email: args.email,
+        password: args.password,
+        phone: args.phone,
+      });
+
+      if (errors) {
+        return errors;
+      }
+
       Object.keys(user).map(async (key) => {
         if (args[key]) {
           if (key === "password") {
@@ -85,6 +95,13 @@ export const userResolver = {
             user[key] = hashedPassword;
           } else if (key === "image") {
             const file = await args.image;
+            const fileType = file.mimetype.split("/");
+            if (fileType[0] !== "image") {
+              return {
+                __typename: "Errors",
+                message: "file must be image",
+              };
+            }
             const location = await uploadFile(context.req.session.qid, file);
             user[key] = location;
           } else {
@@ -95,13 +112,24 @@ export const userResolver = {
 
       await new Promise((resolve) => setTimeout(resolve, 1000));
       await dbAccess.updateOne("user", { field: "id", value: user.id }, user);
-      return user;
+      return {
+        __typename: "User",
+        ...user,
+      };
     },
-    uploadFile: async (root, args, context) => {
-      const file = await args.file;
-      await uploadFile(context.req.session.qid, file);
-      return file.Location;
-      //file.location
+    logout: async (root, args, context) => {
+      return new Promise((resolve) =>
+        context.req.session.destroy((err) => {
+          context.res.clearCookie("qid");
+          if (err) {
+            console.log(err);
+            resolve(false);
+            return;
+          }
+
+          resolve(true);
+        })
+      );
     },
   },
 };

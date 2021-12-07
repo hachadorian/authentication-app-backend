@@ -18,8 +18,8 @@ export const userTypeDefs = gql`
       bio: String
       phone: String
       image: Upload
-    ): User
-    uploadFile(file: Upload!): File
+    ): UserResult
+    logout: Boolean
   }
 
   type User {
@@ -30,12 +30,6 @@ export const userTypeDefs = gql`
     bio: String
     phone: String
     image: String
-  }
-
-  type File {
-    filename: String!
-    mimetype: String!
-    encoding: String!
   }
 
   type Errors {
