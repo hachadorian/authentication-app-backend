@@ -22,7 +22,6 @@ export const validate = (options) => {
         message: "phone number must be exactly 10 digits",
       };
     }
-    console.log(numberPattern.test(options.phone));
     if (!numberPattern.test(options.phone)) {
       return {
         __typename: "Errors",

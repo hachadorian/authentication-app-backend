@@ -27,8 +27,10 @@ const main = async () => {
 
   const RedisStore = connectRedis(session);
   const redisClient = redis.createClient({
-    host: "localhost",
-    port: 6379,
+    url: process.env.REDIS_URL,
+    tls: {
+      rejectUnauthorized: false,
+    },
   });
 
   redisClient.on("connect", () => {
