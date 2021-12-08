@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node src/index.js",
+    "start": "babel-node src/index.js",
     "migrate": "npx knex migrate:latest --knexfile src/db/knexfile.js"
   },
   "keywords": [],
