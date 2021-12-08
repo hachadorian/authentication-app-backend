@@ -4,7 +4,7 @@ import {
   ApolloServerPluginLandingPageGraphQLPlayground,
 } from "apollo-server-core";
 import express from "express";
-import { schema } from "./schema";
+import { schema } from "../src/schema";
 import dotenv from "dotenv";
 import http from "http";
 import session from "express-session";
@@ -71,8 +71,8 @@ const main = async () => {
     cors: false,
   });
 
-  app.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
-    console.log(`🚀 Server ready at ${url}`);
+  app.listen(4000, () => {
+    console.log("server started on http://localhost:4000/graphql");
   });
 };
 
