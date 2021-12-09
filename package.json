@@ -14,14 +14,13 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
     "@babel/cli": "^7.16.0",
     "@babel/core": "^7.16.0",
     "@babel/node": "^7.16.0",
     "@babel/preset-env": "^7.16.0",
-    "babel-cli": "^6.26.0",
-    "nodemon": "^2.0.15"
-  },
-  "dependencies": {
     "apollo-server-core": "^3.5.0",
     "apollo-server-express": "^3.5.0",
     "apollo-server-plugin-http-headers": "^0.1.4",
