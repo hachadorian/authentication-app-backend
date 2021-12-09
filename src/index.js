@@ -27,11 +27,7 @@ const main = async () => {
   );
 
   const RedisStore = connectRedis(session);
-  const redisClient = redis.createClient(process.env.REDIS_URL, {
-    tls: {
-      rejectUnauthorized: false,
-    },
-  });
+  const redisClient = redis.createClient(process.env.REDIS_URL);
 
   redisClient.on("connect", () => {
     console.log("connected to redis...");
