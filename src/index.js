@@ -44,7 +44,6 @@ const main = async () => {
         secure: false,
         httpOnly: false,
         maxAge: 1000 * 60 * 10,
-        sameSite: "lax",
       },
     })
   );
