@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import { validate } from "../utils/validate";
 import { v4 as uuid } from "uuid";
 import { uploadFile } from "../utils/awsS3Uploader";
+import { sendEmail } from "../utils/sendEmail";
 
 export const userResolver = {
   Query: {
@@ -130,6 +131,66 @@ export const userResolver = {
           resolve(true);
         })
       );
+    },
+    forgotPassword: async (root, args, context) => {
+      const user = await dbAccess.findOne("user", {
+        field: "email",
+        value: args.email,
+      });
+
+      if (!user) {
+        return true;
+      }
+
+      const token = uuid();
+      await context.redisClient.set(token, user.id, "ex", 1000 * 60 * 60 * 3);
+
+      await sendEmail(
+        args.email,
+        `link to reset your password <a href="http://localhost:3000/change-password/${token}">reset password</a>`
+      );
+
+      return true;
+    },
+    changePassword: async (root, args, context) => {
+      const errors = validate({
+        password: args.password,
+      });
+
+      if (errors) {
+        return errors;
+      }
+
+      var userid;
+      context.redisClient.get(args.token, (err, val) => {
+        if (err || !val) {
+          console.error(err);
+          return {
+            __typename: "Errors",
+            message: "token is not valid",
+          };
+        }
+        userid = val;
+      });
+
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      const user = await dbAccess.findOne("user", {
+        field: "id",
+        value: userid,
+      });
+
+      const hashedPassword = await bcrypt.hash(args.password, 10);
+      await dbAccess.updateOne(
+        "user",
+        { field: "id", value: userid },
+        { ...user, password: hashedPassword }
+      );
+
+      return {
+        __typename: "Success",
+        message: "password successfully changed",
+      };
     },
   },
 };

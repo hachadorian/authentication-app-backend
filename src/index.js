@@ -54,7 +54,7 @@ const main = async () => {
       ApolloServerPluginDrainHttpServer({ httpServer }),
       ApolloServerPluginLandingPageGraphQLPlayground(),
     ],
-    context: ({ req, res }) => ({ req, res }),
+    context: ({ req, res }) => ({ req, res, redisClient }),
     uploads: false,
     introspection: true,
   });

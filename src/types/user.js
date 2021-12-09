@@ -20,6 +20,8 @@ export const userTypeDefs = gql`
       image: Upload
     ): UserResult
     logout: Boolean
+    forgotPassword(email: String!): Boolean
+    changePassword(token: String!, password: String!): ChangeResult
   }
 
   type User {
@@ -36,5 +38,10 @@ export const userTypeDefs = gql`
     message: String!
   }
 
+  type Success {
+    message: String!
+  }
+
   union UserResult = User | Errors
+  union ChangeResult = Success | Errors
 `;
