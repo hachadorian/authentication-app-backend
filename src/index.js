@@ -70,6 +70,7 @@ const main = async () => {
   apolloServer.applyMiddleware({
     app,
     cors: false,
+    path: "/",
   });
 
   const port = process.env.PORT || 4000;
