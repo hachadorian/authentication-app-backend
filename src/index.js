@@ -62,6 +62,7 @@ const main = async () => {
     ],
     context: ({ req, res }) => ({ req, res }),
     uploads: false,
+    introspection: true,
   });
 
   app.use(graphqlUploadExpress({ maxFileSize: 10000, maxFiles: 10 }));
