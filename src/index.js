@@ -43,7 +43,6 @@ const main = async () => {
       cookie: {
         httpOnly: false,
         maxAge: 1000 * 60 * 10,
-        sameSite: "lax",
       },
     })
   );
