@@ -1,10 +1,11 @@
+import "regenerator-runtime/runtime";
 import { ApolloServer } from "apollo-server-express";
 import {
   ApolloServerPluginDrainHttpServer,
   ApolloServerPluginLandingPageGraphQLPlayground,
 } from "apollo-server-core";
 import express from "express";
-import { schema } from "../src/schema";
+import { schema } from "./schema";
 import dotenv from "dotenv";
 import http from "http";
 import session from "express-session";

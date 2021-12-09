@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build && babel-node dist/index.js",
-    "build": "npx babel src/index.js --out-dir dist",
+    "start": "npm run build && node ./build/index.js",
+    "build": "npm run clean && babel src -d build",
     "dev": "nodemon --exec babel-node src/index.js",
-    "migrate": "npx knex migrate:latest --knexfile src/db/knexfile.js"
+    "migrate": "npx knex migrate:latest --knexfile src/db/knexfile.js",
+    "clean": "rm -rf build && mkdir build"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +26,7 @@
     "apollo-server-plugin-http-headers": "^0.1.4",
     "aws-sdk": "^2.1038.0",
     "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
     "bcrypt": "^5.0.1",
     "connect-redis": "^6.0.0",
     "cors": "^2.8.5",
