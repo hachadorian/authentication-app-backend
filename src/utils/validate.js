@@ -8,7 +8,11 @@ export const validate = (options) => {
     };
   }
 
-  if (options.password && options.password.length <= 2) {
+  if (
+    options.password &&
+    options.password.length <= 2 &&
+    options.password.length === 0
+  ) {
     return {
       __typename: "Errors",
       message: "password length must be greater than 2",
