@@ -35,7 +35,6 @@ export const userResolver = {
       };
 
       const insert = await dbAccess.insertOne("user", createdUser);
-      console.log(insert);
       if (insert && insert.__typename !== "Errors") {
         context.req.session.qid = createdUser.id;
         return {
