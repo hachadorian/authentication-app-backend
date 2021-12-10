@@ -15,10 +15,17 @@ export const dbAccess = {
     try {
       await db(table).insert(object);
     } catch (err) {
-      return {
-        __typename: "Errors",
-        message: err.message,
-      };
+      if (err.code === "23505") {
+        return {
+          __typename: "Errors",
+          message: "duplicate record",
+        };
+      } else {
+        return {
+          __typename: "Errors",
+          message: err.message,
+        };
+      }
     }
     return true;
   },
