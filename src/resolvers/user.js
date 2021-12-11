@@ -4,6 +4,7 @@ import { validate } from "../utils/validate";
 import { v4 as uuid } from "uuid";
 import { uploadFile } from "../utils/awsS3Uploader";
 import { sendEmail } from "../utils/sendEmail";
+import dotenv from "dotenv";
 
 export const userResolver = {
   Query: {
@@ -133,6 +134,7 @@ export const userResolver = {
       );
     },
     forgotPassword: async (root, args, context) => {
+      dotenv.config();
       const user = await dbAccess.findOne("user", {
         field: "email",
         value: args.email,
@@ -147,7 +149,7 @@ export const userResolver = {
 
       await sendEmail(
         args.email,
-        `link to reset your password <a href="http://localhost:3000/change-password/${token}">reset password</a>`
+        `link to reset your password <a href="${process.env.ORIGIN}/change-password/${token}">reset password</a>`
       );
 
       return true;
